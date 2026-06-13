@@ -7,27 +7,13 @@ import { defineGateway } from '../define.js'
  * O catálogo é híbrido: tem o `discovery` configurado para puxar a lista
  * dinâmica de modelos via GET /v1/models (que o nvidia-proxy expõe com
  * ~140 modelos de NVIDIA NIM, GitHub Models, Pollinations, LLM7, tokenrouter,
- * Agnes AI), filtrada por um allowlist que mantém só modelos de chat.
+ * Agnes AI). Pass-through puro — sem filtro — porque filtragem estava
+ * quebrando a agentic.
  *
  * Autenticação: a chave de API do proxy local (`ATUSCODE_PROXY_KEY`, configurada
  * no `nvidia-proxy/.env` e replicada como default em setup). Funciona também
  * com `OPENGATEWAY_API_KEY` ou `OPENAI_API_KEY` (fallback).
  */
-
-/**
- * Allowlist positiva para o /v1/models do gateway. Mantém só modelos de chat
- * (instruct, reasoning, coder). É o inverso do filtro antigo (que era
- * exclusion-based) — agora exigimos match com pelo menos um marcador de chat.
- */
-const CHAT_MODEL_PATTERN =
-  /(instruct|chat(?:qa)?|nemotron|reasoning|reasoner|thinker|thinking|coder|codellama|starcoder|codestral|mathstral|magistral|ministral|devstral|codegemma|qwq|hermes|openchat|magpie|kimi|gpt-?oss|jamba|palmyra|dbrx|seed-oss|yi-large|glm-?\d|m3|mistral-(?:large|medium|small|nemotron|\d)|mixtral|deepseek-(?:v\d|r\d|coder)|llama-?[34]|qwen-?\d|gemma-?\d|phi-?\d|granite-?\d|gpt-?4|gpt-?5)/i
-
-/**
- * Blacklist defensiva: rejeita modelos claramente não-chat, mesmo que
- * contenham um marker acima (ex: um classificador "instruct-tuned").
- */
-const NON_CHAT_PATTERN =
-  /(embed|retriever|rerank|reward|nemoguard|content-safety|guard|whisper|parakeet|canary|riva|stable-diffusion|sdxl|flux|kosmos|florence|nvclip|colpali|tts|voice|tabular|gliner|video-detector|deplot|ising|calibration|parse|qa-)/i
 
 export default defineGateway({
   id: 'atuscode-opengateway',
@@ -48,9 +34,6 @@ export default defineGateway({
   },
   validation: {
     kind: 'credential-env',
-    // ATUSCODE_PROXY_KEY tem prioridade (chave do gateway local do hostclube);
-    // OPENGATEWAY_API_KEY e OPENAI_API_KEY mantidos como fallback para
-    // usuários que já tinham configs anteriores.
     credentialEnvVars: [
       'ATUSCODE_PROXY_KEY',
       'OPENGATEWAY_API_KEY',
@@ -110,7 +93,7 @@ export default defineGateway({
     source: 'hybrid',
     // Descoberta dinâmica: GET /v1/models retorna ~140 modelos
     // (NVIDIA NIM, GitHub Models, Pollinations, LLM7, tokenrouter, Agnes AI).
-    // Filtramos para manter só chat models.
+    // Pass-through puro (sem filtro) para preservar agentic model selection.
     discovery: {
       kind: 'openai-compatible',
       mapModel(raw: unknown) {
@@ -120,12 +103,6 @@ export default defineGateway({
           context_window?: number
         }
         if (!model.id || model.active === false) {
-          return null
-        }
-        if (!CHAT_MODEL_PATTERN.test(model.id)) {
-          return null
-        }
-        if (NON_CHAT_PATTERN.test(model.id)) {
           return null
         }
         return {

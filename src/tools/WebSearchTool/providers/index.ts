@@ -65,6 +65,8 @@ const ALL_PROVIDERS: SearchProvider[] = [
   bingProvider,
   mojeekProvider,
   linkupProvider,
+  // DDG Lite first because it has no rate limit on the public HTML form;
+  // DDG (duck-duck-scrape) is the fallback for when lite returns empty.
   duckduckgoProvider,
 ]
 

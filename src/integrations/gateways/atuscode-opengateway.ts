@@ -4,18 +4,31 @@ import { defineGateway } from '../define.js'
  * AtusCode Opengateway — aponta para o gateway de produção rodando em
  * https://atus.hostclube.com/v1 (o nvidia-proxy do hostclube).
  *
- * Esse gateway expõe um endpoint OpenAI-compatible que roteia para múltiplos
- * modelos (NVIDIA NIM, MiniMax M3, GitHub Models, Pollinations, etc.) através
- * de um único base URL.
+ * O catálogo é híbrido: tem o `discovery` configurado para puxar a lista
+ * dinâmica de modelos via GET /v1/models (que o nvidia-proxy expõe com
+ * ~140 modelos de NVIDIA NIM, GitHub Models, Pollinations, LLM7, tokenrouter,
+ * Agnes AI), filtrada por um allowlist que mantém só modelos de chat.
  *
  * Autenticação: a chave de API do proxy local (`ATUSCODE_PROXY_KEY`, configurada
  * no `nvidia-proxy/.env` e replicada como default em setup). Funciona também
  * com `OPENGATEWAY_API_KEY` ou `OPENAI_API_KEY` (fallback).
- *
- * Em vez de distribuir o gateway como um SaaS externo, ele roda **dentro do
- * hostclube** — qualquer instalação do atuscode que apontar para essa URL
- * vai usar o proxy local, sem precisar de signup externo.
  */
+
+/**
+ * Allowlist positiva para o /v1/models do gateway. Mantém só modelos de chat
+ * (instruct, reasoning, coder). É o inverso do filtro antigo (que era
+ * exclusion-based) — agora exigimos match com pelo menos um marcador de chat.
+ */
+const CHAT_MODEL_PATTERN =
+  /(instruct|chat(?:qa)?|nemotron|reasoning|reasoner|thinker|thinking|coder|codellama|starcoder|codestral|mathstral|magistral|ministral|devstral|codegemma|qwq|hermes|openchat|magpie|kimi|gpt-?oss|jamba|palmyra|dbrx|seed-oss|yi-large|glm-?\d|m3|mistral-(?:large|medium|small|nemotron|\d)|mixtral|deepseek-(?:v\d|r\d|coder)|llama-?[34]|qwen-?\d|gemma-?\d|phi-?\d|granite-?\d|gpt-?4|gpt-?5)/i
+
+/**
+ * Blacklist defensiva: rejeita modelos claramente não-chat, mesmo que
+ * contenham um marker acima (ex: um classificador "instruct-tuned").
+ */
+const NON_CHAT_PATTERN =
+  /(embed|retriever|rerank|reward|nemoguard|content-safety|guard|whisper|parakeet|canary|riva|stable-diffusion|sdxl|flux|kosmos|florence|nvclip|colpali|tts|voice|tabular|gliner|video-detector|deplot|ising|calibration|parse|qa-)/i
+
 export default defineGateway({
   id: 'atuscode-opengateway',
   label: 'AtusCode Opengateway',
@@ -94,66 +107,62 @@ export default defineGateway({
     badge: { text: 'Recommended', color: 'success' },
   },
   catalog: {
-    source: 'static',
+    source: 'hybrid',
+    // Descoberta dinâmica: GET /v1/models retorna ~140 modelos
+    // (NVIDIA NIM, GitHub Models, Pollinations, LLM7, tokenrouter, Agnes AI).
+    // Filtramos para manter só chat models.
+    discovery: {
+      kind: 'openai-compatible',
+      mapModel(raw: unknown) {
+        const model = raw as {
+          id?: string
+          active?: boolean
+          context_window?: number
+        }
+        if (!model.id || model.active === false) {
+          return null
+        }
+        if (!CHAT_MODEL_PATTERN.test(model.id)) {
+          return null
+        }
+        if (NON_CHAT_PATTERN.test(model.id)) {
+          return null
+        }
+        return {
+          id: model.id,
+          apiName: model.id,
+          label: model.id,
+          ...(model.context_window
+            ? { contextWindow: model.context_window }
+            : {}),
+        }
+      },
+    },
+    discoveryCacheTtl: '1d',
+    discoveryRefreshMode: 'background-if-stale',
+    allowManualRefresh: true,
+    // Modelos pinned (sempre aparecem mesmo se o /v1/models estiver fora)
     models: [
-      // Default — MiniMax M3, the free model available on tokenrouter upstream.
       {
         id: 'atuscode-minimax-m3',
         apiName: 'minimax/m3',
-        label: 'MiniMax M3 (via AtusCode Opengateway)',
+        label: 'MiniMax M3 (Free, via tokenrouter)',
         modelDescriptorId: 'minimax-m3',
         notes: 'Free',
       },
-      // NVIDIA NIM models (default upstream of the proxy)
       {
         id: 'atuscode-llama-3.1-8b',
         apiName: 'meta/llama-3.1-8b-instruct',
-        label: 'Llama 3.1 8B (via AtusCode Opengateway)',
+        label: 'Llama 3.1 8B (NVIDIA NIM)',
         modelDescriptorId: 'llama-3.1-8b',
         notes: 'Free',
       },
       {
-        id: 'atuscode-llama-3.1-70b',
-        apiName: 'meta/llama-3.1-70b-instruct',
-        label: 'Llama 3.1 70B (via AtusCode Opengateway)',
-        modelDescriptorId: 'llama-3.1-70b',
-      },
-      {
-        id: 'atuscode-llama-3.3-70b',
-        apiName: 'meta/llama-3.3-70b-instruct',
-        label: 'Llama 3.3 70B (via AtusCode Opengateway)',
-        modelDescriptorId: 'llama-3.3-70b',
-      },
-      // GitHub Models (free)
-      {
         id: 'atuscode-gpt-4o-mini',
-        apiName: 'gpt-4o-mini',
-        label: 'GPT-4o Mini (via AtusCode Opengateway, GitHub)',
+        apiName: 'github/gpt-4o-mini',
+        label: 'GPT-4o Mini (GitHub Models)',
         modelDescriptorId: 'gpt-4o-mini',
         notes: 'Free tier',
-      },
-      {
-        id: 'atuscode-phi-3.5',
-        apiName: 'phi-3.5-mini',
-        label: 'Phi 3.5 Mini (via AtusCode Opengateway, GitHub)',
-        modelDescriptorId: 'phi-3.5-mini',
-        notes: 'Free',
-      },
-      // Pollinations (free)
-      {
-        id: 'atuscode-pollinations-openai-fast',
-        apiName: 'openai-fast',
-        label: 'OpenAI Fast (via AtusCode Opengateway, Pollinations)',
-        modelDescriptorId: 'openai-fast',
-        notes: 'Free',
-      },
-      // LLM7 (free)
-      {
-        id: 'atuscode-ll7m',
-        apiName: 'll7m',
-        label: 'LLM7 Default (via AtusCode Opengateway)',
-        modelDescriptorId: 'll7m',
-        notes: 'Free',
       },
     ],
   },

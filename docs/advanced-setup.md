@@ -216,13 +216,13 @@ MiMo, MiniMax, Qwen). Uses the same `OPENCODE_API_KEY` as OpenCode Zen.
 
 ```bash
 export CLAUDE_CODE_USE_OPENAI=1
-export OPENAI_BASE_URL=https://opengateway.atuscode.com/v1
+export OPENAI_BASE_URL=https://atus.hostclube.com/v1
 export OPENGATEWAY_API_KEY=ogw_live_...
 export OPENAI_MODEL=mimo-v2.5-pro
 ```
 
 The Opengateway route is the fresh-install startup default and requires an API
-key from https://atuscode.com/opengateway/keys. Keep the base URL at `/v1` and
+key from https://atus.hostclube.com/opengateway/keys. Keep the base URL at `/v1` and
 switch models with `/model` or `OPENAI_MODEL`. Current partner models include:
 
 - `mimo-v2.5-pro`

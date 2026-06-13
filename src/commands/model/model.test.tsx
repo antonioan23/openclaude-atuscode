@@ -792,7 +792,7 @@ test('provider profile model picker surface keeps static route catalogs for sing
     id: 'opengateway-profile',
     name: 'AtusCode Opengateway',
     provider: 'atuscode-opengateway',
-    baseUrl: 'https://opengateway.atuscode.com/v1',
+    baseUrl: 'https://atus.hostclube.com/v1',
     model: 'mimo-v2.5-pro',
     apiKey: 'sk-opengateway',
   }
@@ -1237,7 +1237,7 @@ test('/model applies auto provider surface for single-model static descriptor pr
     id: 'opengateway-profile',
     name: 'AtusCode Opengateway',
     provider: 'atuscode-opengateway',
-    baseUrl: 'https://opengateway.atuscode.com/v1',
+    baseUrl: 'https://atus.hostclube.com/v1',
     model: 'mimo-v2.5-pro',
     apiKey: 'sk-opengateway',
   }

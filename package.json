@@ -1,6 +1,6 @@
 {
   "name": "@atuscode/atuscode",
-  "version": "0.18.0",
+  "version": "0.18.2",
   "description": "AtusCode opens coding-agent workflows to any LLM — OpenAI, Gemini, DeepSeek, Ollama, and 200+ models",
   "type": "module",
   "bin": {
@@ -69,8 +69,7 @@
     "doctor:runtime:json": "bun run scripts/system-check.ts --json",
     "doctor:report": "bun run scripts/system-check.ts --out reports/doctor-runtime.json",
     "hardening:check": "bun run smoke && bun run doctor:runtime",
-    "hardening:strict": "bun run typecheck && bun run hardening:check",
-    "prepack": "npm run build"
+    "hardening:strict": "bun run typecheck && bun run hardening:check"
   },
   "dependencies": {
     "@alcalzone/ansi-tokenize": "0.3.0",

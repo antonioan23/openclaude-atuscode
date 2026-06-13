@@ -898,7 +898,7 @@ function convertTools(
   const isGemini = isGeminiMode()
   const strict =
     !isGemini &&
-    !isEnvTruthy(process.env.OPENCLAUDE_DISABLE_STRICT_TOOLS) &&
+    !isEnvTruthy(process.env.ATUSCODE_DISABLE_STRICT_TOOLS) &&
     !options.skipStrict
 
   return tools

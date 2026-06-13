@@ -34,7 +34,7 @@ mock.module('./marketplaceManager.js', () => ({
   getMarketplaceCacheOnly: async (name: string) => ({
     plugins: marketplaces[name] ?? [],
   }),
-  getMarketplacesCacheDir: () => '/tmp/openclaude-marketplaces',
+  getMarketplacesCacheDir: () => '/tmp/atuscode-marketplaces',
   loadKnownMarketplacesConfig: async () =>
     Object.fromEntries(
       Object.keys(marketplaces).map(name => [
@@ -91,12 +91,12 @@ mock.module('../config.js', () => ({
   getGlobalConfigWriteCount: () => 0,
   getAutoUpdaterDisabledReason: () => null,
   formatAutoUpdaterDisabledReason: () => 'enabled',
-  getManagedClaudeRulesDir: () => '/tmp/openclaude-managed-rules',
-  getMemoryPath: () => '/tmp/openclaude-memory.md',
+  getManagedClaudeRulesDir: () => '/tmp/atuscode-managed-rules',
+  getMemoryPath: () => '/tmp/atuscode-memory.md',
   getOrCreateUserID: () => 'test-user-id',
-  getProjectPathForConfig: () => '/tmp/openclaude-project-config.json',
+  getProjectPathForConfig: () => '/tmp/atuscode-project-config.json',
   getRemoteControlAtStartup: () => false,
-  getUserClaudeRulesDir: () => '/tmp/openclaude-user-rules',
+  getUserClaudeRulesDir: () => '/tmp/atuscode-user-rules',
   isAutoUpdaterDisabled: () => false,
   recordFirstStartTime: mock(() => {}),
   getCustomApiKeyStatus: () => ({ hasCustomApiKey: false }),

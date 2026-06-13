@@ -40,7 +40,7 @@ export {
 } from './providerSecrets.js'
 import { getClaudeConfigHomeDir, isEnvTruthy } from './envUtils.js'
 
-export const PROFILE_FILE_NAME = '.openclaude-profile.json'
+export const PROFILE_FILE_NAME = '.atuscode-profile.json'
 export const DEFAULT_GEMINI_BASE_URL =
   'https://generativelanguage.googleapis.com/v1beta/openai'
 export const DEFAULT_GEMINI_MODEL = 'gemini-3-flash-preview'
@@ -933,7 +933,7 @@ export function buildCompatibilityProcessEnv(options: {
 }
 
 export function isDefaultStartupProviderEnv(env: NodeJS.ProcessEnv): boolean {
-  return env[DEFAULT_STARTUP_PROVIDER_ENV_VAR] === 'gitlawb-opengateway'
+  return env[DEFAULT_STARTUP_PROVIDER_ENV_VAR] === 'atuscode-opengateway'
 }
 
 export function buildCodexOAuthProfileEnv(
@@ -1711,19 +1711,19 @@ export async function buildStartupEnvFromProfile(options?: {
   }
 
   if (!persisted) {
-    // No saved profile — default to Gitlawb Opengateway.
+    // No saved profile — default to AtusCode Opengateway.
     const env = buildCompatibilityProcessEnv({
       processEnv,
       compatibilityMode: 'openai',
       profileEnv: {
         OPENAI_BASE_URL:
-          getRouteDefaultBaseUrl('gitlawb-opengateway') ??
-          'https://opengateway.gitlawb.com/v1',
+          getRouteDefaultBaseUrl('atuscode-opengateway') ??
+          'https://opengateway.atuscode.com/v1',
         OPENAI_MODEL:
-          getRouteDefaultModel('gitlawb-opengateway') ?? 'mimo-v2.5-pro',
+          getRouteDefaultModel('atuscode-opengateway') ?? 'mimo-v2.5-pro',
       },
     })
-    env[DEFAULT_STARTUP_PROVIDER_ENV_VAR] = 'gitlawb-opengateway'
+    env[DEFAULT_STARTUP_PROVIDER_ENV_VAR] = 'atuscode-opengateway'
     return env
   }
 
@@ -1732,7 +1732,7 @@ export async function buildStartupEnvFromProfile(options?: {
     persisted,
     goal:
       options?.goal ??
-      normalizeRecommendationGoal(processEnv.OPENCLAUDE_PROFILE_GOAL),
+      normalizeRecommendationGoal(processEnv.ATUSCODE_PROFILE_GOAL),
     processEnv,
     getOllamaChatBaseUrl:
       options?.getOllamaChatBaseUrl ?? getOllamaChatBaseUrl,
@@ -1772,7 +1772,7 @@ export async function applySavedProfileToCurrentSession(options: {
     const explicitEnv = await buildLaunchEnv({
       profile: options.profileFile.profile,
       persisted: options.profileFile,
-      goal: normalizeRecommendationGoal(processEnv.OPENCLAUDE_PROFILE_GOAL),
+      goal: normalizeRecommendationGoal(processEnv.ATUSCODE_PROFILE_GOAL),
       processEnv: buildEnvSource,
       getOllamaChatBaseUrl,
       readGeminiAccessToken,
@@ -1821,7 +1821,7 @@ export async function applySavedProfileToCurrentSession(options: {
   const nextEnv = await buildLaunchEnv({
     profile: options.profileFile.profile,
     persisted: options.profileFile,
-    goal: normalizeRecommendationGoal(processEnv.OPENCLAUDE_PROFILE_GOAL),
+    goal: normalizeRecommendationGoal(processEnv.ATUSCODE_PROFILE_GOAL),
     processEnv: baseEnv,
     getOllamaChatBaseUrl,
     readGeminiAccessToken,

@@ -265,7 +265,7 @@ describe('applyProviderFlag - descriptor-backed openai-compatible routes', () =>
     process.env.OPENAI_API_BASE = 'http://proxy.local:8080/v1'
     process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
 
-    const result = applyProviderFlag('gitlawb-opengateway', [])
+    const result = applyProviderFlag('atuscode-opengateway', [])
 
     expect(result.error).toBeUndefined()
     expect(process.env.CLAUDE_CODE_USE_OPENAI).toBe('1')
@@ -277,44 +277,44 @@ describe('applyProviderFlag - descriptor-backed openai-compatible routes', () =>
   test('descriptor-backed provider selection ignores placeholder OPENAI_API_BASE alias values', () => {
     process.env.OPENAI_API_BASE = 'undefined'
 
-    const result = applyProviderFlag('gitlawb-opengateway', [])
+    const result = applyProviderFlag('atuscode-opengateway', [])
 
     expect(result.error).toBeUndefined()
     expect(process.env.CLAUDE_CODE_USE_OPENAI).toBe('1')
-    expect(process.env.OPENAI_BASE_URL).toBe('https://opengateway.gitlawb.com/v1')
+    expect(process.env.OPENAI_BASE_URL).toBe('https://opengateway.atuscode.com/v1')
     expect(process.env.OPENAI_API_BASE).toBe('undefined')
   })
 
-  test('gitlawb-opengateway explicit provider overrides stale generic base URL', () => {
+  test('atuscode-opengateway explicit provider overrides stale generic base URL', () => {
     process.env.OPENAI_BASE_URL = 'https://api.openai.com/v1'
     process.env.OPENAI_MODEL = 'gpt-5.5'
     process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
 
-    const result = applyProviderFlag('gitlawb-opengateway', [])
+    const result = applyProviderFlag('atuscode-opengateway', [])
 
     expect(result.error).toBeUndefined()
     expect(process.env.CLAUDE_CODE_USE_OPENAI).toBe('1')
-    expect(process.env.OPENAI_BASE_URL).toBe('https://opengateway.gitlawb.com/v1')
+    expect(process.env.OPENAI_BASE_URL).toBe('https://opengateway.atuscode.com/v1')
     expect(process.env.OPENGATEWAY_API_KEY).toBe('fake-ogw-key')
     expect(process.env.OPENAI_API_KEY).toBe('fake-ogw-key')
   })
 
-  test('gitlawb-opengateway explicit provider respects OPENGATEWAY_BASE_URL override', () => {
+  test('atuscode-opengateway explicit provider respects OPENGATEWAY_BASE_URL override', () => {
     process.env.OPENAI_BASE_URL = 'https://api.openai.com/v1'
     process.env.OPENGATEWAY_BASE_URL = 'http://localhost:8181/v1'
 
-    const result = applyProviderFlag('gitlawb-opengateway', [])
+    const result = applyProviderFlag('atuscode-opengateway', [])
 
     expect(result.error).toBeUndefined()
     expect(process.env.CLAUDE_CODE_USE_OPENAI).toBe('1')
     expect(process.env.OPENAI_BASE_URL).toBe('http://localhost:8181/v1')
   })
 
-  test('gitlawb-opengateway explicit provider preserves custom OPENAI_BASE_URL when no OPENGATEWAY_BASE_URL is set', () => {
+  test('atuscode-opengateway explicit provider preserves custom OPENAI_BASE_URL when no OPENGATEWAY_BASE_URL is set', () => {
     process.env.OPENAI_BASE_URL = 'http://localhost:8181/v1'
     process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
 
-    const result = applyProviderFlag('gitlawb-opengateway', [])
+    const result = applyProviderFlag('atuscode-opengateway', [])
 
     expect(result.error).toBeUndefined()
     expect(process.env.CLAUDE_CODE_USE_OPENAI).toBe('1')
@@ -322,12 +322,12 @@ describe('applyProviderFlag - descriptor-backed openai-compatible routes', () =>
     expect(process.env.OPENAI_API_KEY).toBe('fake-ogw-key')
   })
 
-  test('gitlawb-opengateway explicit provider prefers OPENGATEWAY_API_KEY over generic OPENAI_API_KEY', () => {
+  test('atuscode-opengateway explicit provider prefers OPENGATEWAY_API_KEY over generic OPENAI_API_KEY', () => {
     process.env.OPENGATEWAY_BASE_URL = 'http://localhost:8181/v1'
     process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
     process.env.OPENAI_API_KEY = 'fake-generic-openai-key'
 
-    const result = applyProviderFlag('gitlawb-opengateway', [])
+    const result = applyProviderFlag('atuscode-opengateway', [])
 
     expect(result.error).toBeUndefined()
     expect(process.env.CLAUDE_CODE_USE_OPENAI).toBe('1')
@@ -335,12 +335,12 @@ describe('applyProviderFlag - descriptor-backed openai-compatible routes', () =>
     expect(process.env.OPENAI_API_KEY).toBe('fake-ogw-key')
   })
 
-  test('gitlawb-opengateway explicit provider ignores blank OPENGATEWAY_API_KEY fallback', () => {
+  test('atuscode-opengateway explicit provider ignores blank OPENGATEWAY_API_KEY fallback', () => {
     process.env.OPENGATEWAY_BASE_URL = 'http://localhost:8181/v1'
     process.env.OPENGATEWAY_API_KEY = '   '
     process.env.OPENAI_API_KEY = 'fake-openai-fallback'
 
-    const result = applyProviderFlag('gitlawb-opengateway', [])
+    const result = applyProviderFlag('atuscode-opengateway', [])
 
     expect(result.error).toBeUndefined()
     expect(process.env.CLAUDE_CODE_USE_OPENAI).toBe('1')
@@ -348,10 +348,10 @@ describe('applyProviderFlag - descriptor-backed openai-compatible routes', () =>
     expect(process.env.OPENAI_API_KEY).toBe('fake-openai-fallback')
   })
 
-  test('gitlawb-opengateway trims scoped API key and clears the copied key when switching routes', () => {
+  test('atuscode-opengateway trims scoped API key and clears the copied key when switching routes', () => {
     process.env.OPENGATEWAY_API_KEY = ' fake-ogw-key '
 
-    const opengatewayResult = applyProviderFlag('gitlawb-opengateway', [])
+    const opengatewayResult = applyProviderFlag('atuscode-opengateway', [])
     expect(opengatewayResult.error).toBeUndefined()
     expect(process.env.OPENAI_API_KEY).toBe('fake-ogw-key')
 
@@ -377,7 +377,7 @@ describe('applyProviderFlag - descriptor-backed openai-compatible routes', () =>
   })
 
   test('descriptor-backed provider selection does not keep stale OpenGateway route', () => {
-    process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1'
+    process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1'
     process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
 
     const result = applyProviderFlag('openrouter', [])
@@ -692,8 +692,8 @@ describe('applyProviderFlagFromArgs', () => {
     expect(applyProviderFlagFromArgs(['--model', 'gpt-4o'])).toBeUndefined()
   })
 
-  test('reapplies remembered gitlawb-opengateway after settings env restores stale OpenAI routing', () => {
-    const args = ['--provider', 'gitlawb-opengateway']
+  test('reapplies remembered atuscode-opengateway after settings env restores stale OpenAI routing', () => {
+    const args = ['--provider', 'atuscode-opengateway']
     delete process.env.OPENGATEWAY_API_KEY
     delete process.env.OPENAI_API_KEY
 
@@ -702,7 +702,7 @@ describe('applyProviderFlagFromArgs', () => {
     })
     expect(earlyResult?.error).toBeUndefined()
     expect(process.env.OPENAI_BASE_URL).toBe(
-      'https://opengateway.gitlawb.com/v1',
+      'https://opengateway.atuscode.com/v1',
     )
     expect(process.env.OPENAI_API_KEY).toBeUndefined()
 
@@ -713,7 +713,7 @@ describe('applyProviderFlagFromArgs', () => {
 
     expect(lateResult?.error).toBeUndefined()
     expect(process.env.OPENAI_BASE_URL).toBe(
-      'https://opengateway.gitlawb.com/v1',
+      'https://opengateway.atuscode.com/v1',
     )
     expect(process.env.OPENAI_API_KEY as string | undefined).toBe(
       'settings-ogw-key',
@@ -725,7 +725,7 @@ describe('applyProviderFlagFromArgs', () => {
       [
         '--print',
         '--provider',
-        'gitlawb-opengateway',
+        'atuscode-opengateway',
         '--model',
         'custom-ogw-model',
         'do not retain prompt text',
@@ -741,7 +741,7 @@ describe('applyProviderFlagFromArgs', () => {
 
     expect(lateResult?.error).toBeUndefined()
     expect(process.env.OPENAI_BASE_URL).toBe(
-      'https://opengateway.gitlawb.com/v1',
+      'https://opengateway.atuscode.com/v1',
     )
     expect(process.env.OPENAI_MODEL).toBe('custom-ogw-model')
   })

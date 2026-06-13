@@ -14,7 +14,7 @@ const originalEnv = { ...process.env }
 const originalMacro = (globalThis as Record<string, unknown>).MACRO
 
 beforeEach(async () => {
-  await acquireSharedMutationLock('utils/openclaudeInstallSurfaces.test.ts')
+  await acquireSharedMutationLock('utils/atuscodeInstallSurfaces.test.ts')
 })
 
 afterEach(() => {
@@ -53,30 +53,30 @@ async function mockEnvPlatform(platform: 'darwin' | 'win32') {
   }))
 }
 
-test('install command displays ~/.local/bin/openclaude on non-Windows', async () => {
+test('install command displays ~/.local/bin/atuscode on non-Windows', async () => {
   await mockEnvPlatform('darwin')
 
   const { getInstallationPath } = await importFreshInstallCommand()
 
-  expect(getInstallationPath()).toBe('~/.local/bin/openclaude')
+  expect(getInstallationPath()).toBe('~/.local/bin/atuscode')
 })
 
-test('install command displays openclaude.exe path on Windows', async () => {
+test('install command displays atuscode.exe path on Windows', async () => {
   await mockEnvPlatform('win32')
 
   const { getInstallationPath } = await importFreshInstallCommand()
 
   expect(getInstallationPath()).toBe(
-    join(homedir(), '.local', 'bin', 'openclaude.exe').replace(/\//g, '\\'),
+    join(homedir(), '.local', 'bin', 'atuscode.exe').replace(/\//g, '\\'),
   )
 })
 
-test('cleanupNpmInstallations removes both openclaude and legacy claude local install dirs', async () => {
+test('cleanupNpmInstallations removes both atuscode and legacy claude local install dirs', async () => {
   const removedPaths: string[] = []
   ;(globalThis as Record<string, unknown>).MACRO = {
-    PACKAGE_URL: '@gitlawb/openclaude',
+    PACKAGE_URL: '@atuscode/atuscode',
   }
-  process.env.CLAUDE_CONFIG_DIR = join(homedir(), '.openclaude')
+  process.env.CLAUDE_CONFIG_DIR = join(homedir(), '.atuscode')
 
   mock.module('fs/promises', () => ({
     ...fsPromises,
@@ -95,12 +95,12 @@ test('cleanupNpmInstallations removes both openclaude and legacy claude local in
 
   mock.module('./envUtils.js', () => ({
     ...realEnvUtils,
-    getClaudeConfigHomeDir: () => join(homedir(), '.openclaude'),
+    getClaudeConfigHomeDir: () => join(homedir(), '.atuscode'),
   }))
 
   const { cleanupNpmInstallations } = await importFreshInstaller()
   await cleanupNpmInstallations()
 
-  expect(removedPaths).toContain(join(homedir(), '.openclaude', 'local'))
+  expect(removedPaths).toContain(join(homedir(), '.atuscode', 'local'))
   expect(removedPaths).toContain(join(homedir(), '.claude', 'local'))
 })

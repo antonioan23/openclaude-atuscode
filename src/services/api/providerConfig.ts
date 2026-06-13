@@ -33,12 +33,12 @@ export const DEFAULT_OPENCODE_GO_BASE_URL = 'https://opencode.ai/zen/go/v1'
 export const DEFAULT_GITHUB_MODELS_API_MODEL = 'gpt-4o'
 const warnedUndefinedEnvNames = new Set<string>()
 
-function normalizeGitlawbOpengatewayBaseUrl(baseUrl: string | undefined): string | undefined {
+function normalizeAtusCodeOpengatewayBaseUrl(baseUrl: string | undefined): string | undefined {
   if (!baseUrl) return undefined
   try {
     const parsed = new URL(baseUrl)
     const hostname = parsed.hostname.toLowerCase()
-    if (hostname !== 'opengateway.gitlawb.com' && hostname !== 'opengateway.fly.dev') {
+    if (hostname !== 'opengateway.atuscode.com' && hostname !== 'opengateway.fly.dev') {
       return baseUrl
     }
     const path = parsed.pathname.replace(/\/+$/, '').toLowerCase()
@@ -401,12 +401,12 @@ export function isLocalProviderUrl(baseUrl: string | undefined): boolean {
 // API the layers are invisible, but against multi-second local round-trips
 // they multiply per-call.
 //
-// Set `OPENCLAUDE_LOCAL_FAST_PATH=1` to force it on, `=0` to force off, or
+// Set `ATUSCODE_LOCAL_FAST_PATH=1` to force it on, `=0` to force off, or
 // leave it unset to let `isLocalProviderUrl` decide. The opt-out is intended
 // to be conservative: if the env var is set explicitly, callers can audit
 // regressions; if not, behaviour only changes for hosts already classified
 // as local by the existing detector (loopback, RFC1918, .local, ULA/LL).
-const LOCAL_FAST_PATH_ENV = 'OPENCLAUDE_LOCAL_FAST_PATH'
+const LOCAL_FAST_PATH_ENV = 'ATUSCODE_LOCAL_FAST_PATH'
 
 export type LocalFastPathConfig = {
   enabled: boolean
@@ -696,7 +696,7 @@ export function resolveProviderRequest(options?: {
     !isGithubMode && isCodexAliasModel && !hasUserSetBaseUrl
       ? DEFAULT_CODEX_BASE_URL
       : rawBaseUrl
-  const finalBaseUrl = normalizeGitlawbOpengatewayBaseUrl(finalBaseUrlRaw)
+  const finalBaseUrl = normalizeAtusCodeOpengatewayBaseUrl(finalBaseUrlRaw)
 
   const githubEndpointType = isGithubMode
     ? getGithubEndpointType(rawBaseUrl)

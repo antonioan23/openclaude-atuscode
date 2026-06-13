@@ -238,7 +238,7 @@ test('xai validation surfaces sign-in guidance when no credential source is set'
   })
   expect(error).not.toBeNull()
   expect(error!).toContain('XAI_API_KEY is required')
-  expect(error!).toContain('openclaude auth xai login')
+  expect(error!).toContain('atuscode auth xai login')
 })
 
 test('xai validation accepts stored OAuth credentials even without an env marker', async () => {
@@ -339,7 +339,7 @@ test('nearai validation accepts NEARAI_API_KEY for wildcard TEE completions endp
 
 test('opengateway validation fails without OPENGATEWAY_API_KEY or OPENAI_API_KEY', async () => {
   process.env.CLAUDE_CODE_USE_OPENAI = '1'
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1'
   delete process.env.OPENAI_API_KEY
   delete process.env.OPENGATEWAY_API_KEY
 
@@ -350,7 +350,7 @@ test('opengateway validation fails without OPENGATEWAY_API_KEY or OPENAI_API_KEY
 
 test('opengateway validation passes when OPENGATEWAY_API_KEY is set', async () => {
   process.env.CLAUDE_CODE_USE_OPENAI = '1'
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1'
   process.env.OPENGATEWAY_API_KEY = 'ogw_live_test_0000000000000000'
   delete process.env.OPENAI_API_KEY
 
@@ -359,7 +359,7 @@ test('opengateway validation passes when OPENGATEWAY_API_KEY is set', async () =
 
 test('opengateway validation accepts OPENAI_API_KEY as fallback', async () => {
   process.env.CLAUDE_CODE_USE_OPENAI = '1'
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1'
   process.env.OPENAI_API_KEY = 'ogw_live_test_0000000000000000'
   delete process.env.OPENGATEWAY_API_KEY
 
@@ -368,7 +368,7 @@ test('opengateway validation accepts OPENAI_API_KEY as fallback', async () => {
 
 test('opengateway validation still requires a key on the model-specific path', async () => {
   process.env.CLAUDE_CODE_USE_OPENAI = '1'
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1/xiaomi-mimo'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1/xiaomi-mimo'
   delete process.env.OPENAI_API_KEY
   delete process.env.OPENGATEWAY_API_KEY
 

@@ -32,7 +32,7 @@ test('vision_not_supported shows image-specific guidance for remote host', () =>
   const error = APIError.generate(
     404,
     undefined,
-    'OpenAI API error 404: Not Found [openai_category=vision_not_supported,host=opengateway.gitlawb.com] Hint: The provider returned 404 for a request containing images.',
+    'OpenAI API error 404: Not Found [openai_category=vision_not_supported,host=opengateway.atuscode.com] Hint: The provider returned 404 for a request containing images.',
     new Headers(),
   )
 
@@ -42,7 +42,7 @@ test('vision_not_supported shows image-specific guidance for remote host', () =>
   expect(message.isApiErrorMessage).toBe(true)
   expect(text).toContain('images')
   expect(text).toContain('mimo-v2.5-pro')
-  expect(text).toContain('opengateway.gitlawb.com')
+  expect(text).toContain('opengateway.atuscode.com')
   expect(text).not.toContain('OPENAI_BASE_URL')
 })
 

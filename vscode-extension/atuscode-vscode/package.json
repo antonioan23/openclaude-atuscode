@@ -1,0 +1,235 @@
+{
+  "name": "atuscode-vscode",
+  "displayName": "AtusCode",
+  "description": "Practical VS Code companion for AtusCode with project-aware launch, Control Center, optional Microsoft Foundry / Azure OpenAI terminal env, and chat.",
+  "version": "0.2.0",
+  "publisher": "devnull-bootloader",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Themes",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:atuscode.start",
+    "onCommand:atuscode.startInWorkspaceRoot",
+    "onCommand:atuscode.openDocs",
+    "onCommand:atuscode.openSetupDocs",
+    "onCommand:atuscode.openWorkspaceProfile",
+    "onCommand:atuscode.openControlCenter",
+    "onCommand:atuscode.newChat",
+    "onCommand:atuscode.openChat",
+    "onCommand:atuscode.resumeSession",
+    "onCommand:atuscode.abortChat",
+    "onCommand:atuscode.setAzureApiKey",
+    "onCommand:atuscode.clearAzureApiKey",
+    "onCommand:atuscode.configureAzureChat",
+    "onCommand:atuscode.openAzureSettings",
+    "onView:atuscode.controlCenter",
+    "onView:atuscode.chat"
+  ],
+  "main": "./src/extension.js",
+  "files": [
+    "README.md",
+    "media/**",
+    "src/extension.js",
+    "src/presentation.js",
+    "src/state.js",
+    "src/chat/**",
+    "themes/**"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "atuscode.start",
+        "title": "AtusCode: Launch in Terminal",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.startInWorkspaceRoot",
+        "title": "AtusCode: Launch in Workspace Root",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.openDocs",
+        "title": "AtusCode: Open Repository",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.openSetupDocs",
+        "title": "AtusCode: Open Setup Guide",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.openWorkspaceProfile",
+        "title": "AtusCode: Open Workspace Profile",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.openControlCenter",
+        "title": "AtusCode: Open Control Center",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.newChat",
+        "title": "AtusCode: New Chat",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.openChat",
+        "title": "AtusCode: Open Chat Panel",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.resumeSession",
+        "title": "AtusCode: Resume Session",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.abortChat",
+        "title": "AtusCode: Abort Generation",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.setAzureApiKey",
+        "title": "AtusCode: Set Azure / Foundry API Key (Secret Storage)",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.clearAzureApiKey",
+        "title": "AtusCode: Clear Azure / Foundry API Key",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.configureAzureChat",
+        "title": "AtusCode: Configure Azure / Foundry Chat (wizard)",
+        "category": "AtusCode"
+      },
+      {
+        "command": "atuscode.openAzureSettings",
+        "title": "AtusCode: Open Azure / Foundry Settings",
+        "category": "AtusCode"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "atuscode",
+          "title": "AtusCode",
+          "icon": "media/atuscode.svg"
+        }
+      ]
+    },
+    "views": {
+      "atuscode": [
+        {
+          "id": "atuscode.chat",
+          "name": "Chat",
+          "type": "webview"
+        },
+        {
+          "id": "atuscode.controlCenter",
+          "name": "Control Center",
+          "type": "webview"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "atuscode.openChat",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l"
+      }
+    ],
+    "configuration": {
+      "title": "AtusCode",
+      "properties": {
+        "atuscode.launchCommand": {
+          "type": "string",
+          "default": "atuscode",
+          "description": "Command run in the integrated terminal when launching AtusCode."
+        },
+        "atuscode.terminalName": {
+          "type": "string",
+          "default": "AtusCode",
+          "description": "Integrated terminal tab name for AtusCode sessions."
+        },
+        "atuscode.useOpenAIShim": {
+          "type": "boolean",
+          "default": false,
+          "description": "Optionally set CLAUDE_CODE_USE_OPENAI=1 in launched AtusCode terminals when Azure injection is off or incomplete."
+        },
+        "atuscode.azure.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, launch injects Microsoft Foundry / Azure OpenAI-compatible chat env (OPENAI_* + AZURE_OPENAI_API_VERSION) into the AtusCode terminal."
+        },
+        "atuscode.azure.endpoint": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Azure resource base URL for OpenAI-compatible chat (example: `https://YOUR_RESOURCE.openai.azure.com`). Do not put `api-version` here; use **AtusCode: Azure API Version**."
+        },
+        "atuscode.azure.apiVersion": {
+          "type": "string",
+          "default": "2024-12-01-preview",
+          "description": "Azure API version for chat completions (AZURE_OPENAI_API_VERSION)."
+        },
+        "atuscode.azure.deployment": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Azure deployment name (maps to `OPENAI_MODEL` for the OpenAI shim)."
+        },
+        "atuscode.azure.forceAzureUrlStyle": {
+          "type": "boolean",
+          "default": true,
+          "description": "Sets OPENAI_AZURE_STYLE=1 so deployment URLs and api-key header work on Foundry and non-standard Azure hosts."
+        },
+        "atuscode.azure.apiKey": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Optional API key in settings (not recommended). Prefer **AtusCode: Set Azure / Foundry API Key**. Secret wins if both are set."
+        },
+        "atuscode.permissionMode": {
+          "type": "string",
+          "default": "acceptEdits",
+          "enum": ["default", "acceptEdits", "bypassPermissions", "plan"],
+          "enumDescriptions": [
+            "Prompt for permission on each tool use (requires manual approval)",
+            "Auto-approve file edits, prompt for other operations (recommended)",
+            "Auto-approve all operations without prompting",
+            "Read-only mode — no file modifications allowed"
+          ],
+          "description": "Permission mode for chat sessions. Controls which tool operations are auto-approved."
+        }
+      }
+    },
+    "themes": [
+      {
+        "label": "AtusCode Terminal Black",
+        "uiTheme": "vs-dark",
+        "path": "./themes/AtusCode-Terminal-Black.json"
+      }
+    ]
+  },
+  "scripts": {
+    "test": "bun test src",
+    "lint": "node scripts/lint.js",
+    "package": "npx @vscode/vsce package --no-dependencies"
+  },
+  "keywords": [
+    "atuscode",
+    "terminal",
+    "theme",
+    "cli",
+    "llm",
+    "azure",
+    "foundry"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atuscode/atuscode"
+  },
+  "license": "MIT"
+}

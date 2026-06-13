@@ -1,4 +1,4 @@
-# OpenClaude Quick Start for Windows
+# AtusCode Quick Start for Windows
 
 This guide uses Windows PowerShell.
 
@@ -15,10 +15,10 @@ node --version
 npm --version
 ```
 
-## 2. Install OpenClaude
+## 2. Install AtusCode
 
 ```powershell
-npm install -g @gitlawb/openclaude@latest
+npm install -g @atuscode/atuscode@latest
 ```
 
 ## 3. Pick One Provider
@@ -32,7 +32,7 @@ $env:CLAUDE_CODE_USE_OPENAI="1"
 $env:OPENAI_API_KEY="sk-your-key-here"
 $env:OPENAI_MODEL="gpt-4o"
 
-openclaude
+atuscode
 ```
 
 ### Option B: DeepSeek
@@ -43,7 +43,7 @@ $env:OPENAI_API_KEY="sk-your-key-here"
 $env:OPENAI_BASE_URL="https://api.deepseek.com/v1"
 $env:OPENAI_MODEL="deepseek-v4-flash"
 
-openclaude
+atuscode
 ```
 
 Use `deepseek-v4-pro` when you want the stronger model. `deepseek-chat` and `deepseek-reasoner` still work as DeepSeek's legacy API aliases.
@@ -63,7 +63,7 @@ $env:CLAUDE_CODE_USE_OPENAI="1"
 $env:OPENAI_BASE_URL="http://localhost:11434/v1"
 $env:OPENAI_MODEL="llama3.1:8b"
 
-openclaude
+atuscode
 ```
 
 No API key is needed for Ollama local models.
@@ -88,22 +88,22 @@ $env:OPENAI_BASE_URL="http://localhost:1234/v1"
 $env:OPENAI_MODEL="your-model-name"
 # $env:OPENAI_API_KEY="lmstudio"  # optional: some users need a dummy key
 
-openclaude
+atuscode
 ```
 
 Replace `your-model-name` with the model name shown in LM Studio.
 
 No API key is needed for LM Studio local models (but uncomment the `OPENAI_API_KEY` line if you hit auth errors).
 
-## 4. If `openclaude` Is Not Found
+## 4. If `atuscode` Is Not Found
 
 Close PowerShell, open a new one, and try again:
 
 ```powershell
-openclaude
+atuscode
 ```
 
-If PowerShell still says `openclaude` is not recognized, npm's global bin
+If PowerShell still says `atuscode` is not recognized, npm's global bin
 folder may be missing from your user `Path`. Add it, then open a new
 PowerShell window:
 
@@ -143,16 +143,16 @@ Check the basics:
 - make sure a model is loaded in LM Studio
 - make sure the model name matches what you set in `OPENAI_MODEL`
 
-## 6. Updating OpenClaude
+## 6. Updating AtusCode
 
 ```powershell
-npm install -g @gitlawb/openclaude@latest
+npm install -g @atuscode/atuscode@latest
 ```
 
-## 7. Uninstalling OpenClaude
+## 7. Uninstalling AtusCode
 
 ```powershell
-npm uninstall -g @gitlawb/openclaude
+npm uninstall -g @atuscode/atuscode
 ```
 
 

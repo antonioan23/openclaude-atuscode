@@ -125,12 +125,12 @@ export const flagGroups: FlagGroup[] = [
 export const subcommands: Subcommand[] = [
   {
     name: 'mcp',
-    usage: 'openclaude mcp [add|remove|list|doctor]',
+    usage: 'atuscode mcp [add|remove|list|doctor]',
     description: 'Manage MCP server configuration from the command line.',
   },
   {
     name: 'ssh',
-    usage: 'openclaude ssh <host> [dir]',
-    description: 'Run OpenClaude on a remote host over SSH. Deploys the binary and tunnels API auth back through your local machine — no remote setup needed.',
+    usage: 'atuscode ssh <host> [dir]',
+    description: 'Run AtusCode on a remote host over SSH. Deploys the binary and tunnels API auth back through your local machine — no remote setup needed.',
   },
 ]

@@ -62,11 +62,11 @@ async function expectModelCommandDoesNotWaitForRefresh(
   const result = await Promise.race([
     commandPromise,
     new Promise(resolve =>
-      setTimeout(() => resolve(Symbol.for('openclaude.test.timeout')), 1_000),
+      setTimeout(() => resolve(Symbol.for('atuscode.test.timeout')), 1_000),
     ),
   ])
 
-  expect(result).not.toBe(Symbol.for('openclaude.test.timeout'))
+  expect(result).not.toBe(Symbol.for('atuscode.test.timeout'))
   return result
 }
 
@@ -790,9 +790,9 @@ test('auto profile model picker mode uses explicit multi-model profiles as the p
 test('provider profile model picker surface keeps static route catalogs for single-default profiles', async () => {
   const activeProfile = {
     id: 'opengateway-profile',
-    name: 'Gitlawb Opengateway',
-    provider: 'gitlawb-opengateway',
-    baseUrl: 'https://opengateway.gitlawb.com/v1',
+    name: 'AtusCode Opengateway',
+    provider: 'atuscode-opengateway',
+    baseUrl: 'https://opengateway.atuscode.com/v1',
     model: 'mimo-v2.5-pro',
     apiKey: 'sk-opengateway',
   }
@@ -811,17 +811,17 @@ test('provider profile model picker surface keeps static route catalogs for sing
 
   expect(
     mergeActiveProfileModelOptions(
-      'gitlawb-opengateway',
+      'atuscode-opengateway',
       [
         {
           value: 'mimo-v2.5-pro',
           label: 'MiMo v2.5 Pro',
-          description: 'Recommended · Provider: Gitlawb Opengateway',
+          description: 'Recommended · Provider: AtusCode Opengateway',
         },
         {
           value: 'mimo-v2-pro',
           label: 'MiMo v2 Pro',
-          description: 'Provider: Gitlawb Opengateway',
+          description: 'Provider: AtusCode Opengateway',
         },
       ],
       { profileModelSurface: 'provider' },
@@ -830,12 +830,12 @@ test('provider profile model picker surface keeps static route catalogs for sing
     {
       value: 'mimo-v2.5-pro',
       label: 'MiMo v2.5 Pro',
-      description: 'Recommended · Provider: Gitlawb Opengateway',
+      description: 'Recommended · Provider: AtusCode Opengateway',
     },
     {
       value: 'mimo-v2-pro',
       label: 'MiMo v2 Pro',
-      description: 'Provider: Gitlawb Opengateway',
+      description: 'Provider: AtusCode Opengateway',
     },
   ])
 })
@@ -1235,9 +1235,9 @@ test('/model applies auto provider surface for single-model descriptor profiles'
 test('/model applies auto provider surface for single-model static descriptor profiles', async () => {
   const activeProfile = {
     id: 'opengateway-profile',
-    name: 'Gitlawb Opengateway',
-    provider: 'gitlawb-opengateway',
-    baseUrl: 'https://opengateway.gitlawb.com/v1',
+    name: 'AtusCode Opengateway',
+    provider: 'atuscode-opengateway',
+    baseUrl: 'https://opengateway.atuscode.com/v1',
     model: 'mimo-v2.5-pro',
     apiKey: 'sk-opengateway',
   }

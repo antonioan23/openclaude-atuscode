@@ -879,10 +879,10 @@ test('opengateway sends Accept-Encoding: identity header on chat requests', asyn
   let capturedHeaders: Headers | undefined
 
   registerGateway({
-    id: 'gitlawb-opengateway-test',
-    label: 'Gitlawb Opengateway',
+    id: 'atuscode-opengateway-test',
+    label: 'AtusCode Opengateway',
     category: 'aggregating',
-    defaultBaseUrl: 'https://opengateway.gitlawb.com/v1/xiaomi-mimo',
+    defaultBaseUrl: 'https://opengateway.atuscode.com/v1/xiaomi-mimo',
     defaultModel: 'mimo-v2.5-pro',
     setup: {
       requiresAuth: false,
@@ -909,7 +909,7 @@ test('opengateway sends Accept-Encoding: identity header on chat requests', asyn
   })
 
   process.env.CLAUDE_CODE_USE_OPENAI = '1'
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1/xiaomi-mimo'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1/xiaomi-mimo'
   process.env.OPENAI_MODEL = 'mimo-v2.5-pro'
 
   globalThis.fetch = (async (_input, init) => {
@@ -1364,7 +1364,7 @@ test('preserves Gemini tool call extra_content in follow-up requests', async () 
 })
 
 test('replays Gemini tool signatures for OpenGateway Gemini models', async () => {
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1'
   let requestBody: Record<string, unknown> | undefined
 
   globalThis.fetch = (async (_input, init) => {
@@ -1445,7 +1445,7 @@ test('replays Gemini tool signatures for OpenGateway Gemini models', async () =>
 })
 
 test('OpenGateway MiMo replays real reasoning_content without adding empty fallback', async () => {
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1'
   process.env.OPENAI_MODEL = 'mimo-v2.5-pro'
   let requestBody: Record<string, unknown> | undefined
 
@@ -1609,7 +1609,7 @@ test('Xiaomi MiMo replays real reasoning_content without adding empty fallback',
 })
 
 test('OpenGateway MiMo does not synthesize empty reasoning_content when missing', async () => {
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1'
   process.env.OPENAI_MODEL = 'mimo-v2.5-pro'
   let requestBody: Record<string, unknown> | undefined
 
@@ -2405,27 +2405,27 @@ test('xiaomi mimo route uses api-key auth header and max_completion_tokens', asy
   expect(capturedBody).not.toHaveProperty('max_tokens')
 })
 
-test('gitlawb opengateway provider flag sends OPENGATEWAY_API_KEY as bearer auth despite stale generic base URL', async () => {
+test('atuscode opengateway provider flag sends OPENGATEWAY_API_KEY as bearer auth despite stale generic base URL', async () => {
   process.env.OPENAI_BASE_URL = 'https://api.openai.com/v1'
   process.env.OPENAI_MODEL = 'gpt-5.5'
   process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
   delete process.env.OPENAI_API_KEY
 
-  const result = applyProviderFlag('gitlawb-opengateway', [])
+  const result = applyProviderFlag('atuscode-opengateway', [])
   expect(result.error).toBeUndefined()
 
   const captured = await captureChatCompletionRequest()
 
-  expect(captured.url).toBe('https://opengateway.gitlawb.com/v1/chat/completions')
+  expect(captured.url).toBe('https://opengateway.atuscode.com/v1/chat/completions')
   expect(captured.authorization).toBe('Bearer fake-ogw-key')
 })
 
-test('gitlawb opengateway provider flag accepts OPENAI_API_KEY compatibility fallback', async () => {
+test('atuscode opengateway provider flag accepts OPENAI_API_KEY compatibility fallback', async () => {
   delete process.env.OPENAI_BASE_URL
   delete process.env.OPENGATEWAY_API_KEY
   process.env.OPENAI_API_KEY = 'fake-openai-fallback'
 
-  const result = applyProviderFlag('gitlawb-opengateway', [])
+  const result = applyProviderFlag('atuscode-opengateway', [])
   expect(result.error).toBeUndefined()
 
   const captured = await captureChatCompletionRequest()
@@ -2433,25 +2433,25 @@ test('gitlawb opengateway provider flag accepts OPENAI_API_KEY compatibility fal
   expect(captured.authorization).toBe('Bearer fake-openai-fallback')
 })
 
-test('gitlawb opengateway provider flag sends OPENAI_API_KEY fallback despite stale generic base URL', async () => {
+test('atuscode opengateway provider flag sends OPENAI_API_KEY fallback despite stale generic base URL', async () => {
   process.env.OPENAI_BASE_URL = 'https://api.openai.com/v1'
   process.env.OPENAI_API_KEY = 'fake-openai-fallback'
   delete process.env.OPENGATEWAY_API_KEY
 
-  const result = applyProviderFlag('gitlawb-opengateway', [])
+  const result = applyProviderFlag('atuscode-opengateway', [])
   expect(result.error).toBeUndefined()
 
   const captured = await captureChatCompletionRequest()
 
-  expect(captured.url).toBe('https://opengateway.gitlawb.com/v1/chat/completions')
+  expect(captured.url).toBe('https://opengateway.atuscode.com/v1/chat/completions')
   expect(captured.authorization).toBe('Bearer fake-openai-fallback')
 })
 
-test('gitlawb opengateway provider flag trims OPENGATEWAY_API_KEY before bearer auth', async () => {
+test('atuscode opengateway provider flag trims OPENGATEWAY_API_KEY before bearer auth', async () => {
   process.env.OPENGATEWAY_API_KEY = ' fake-ogw-key '
   delete process.env.OPENAI_API_KEY
 
-  const result = applyProviderFlag('gitlawb-opengateway', [])
+  const result = applyProviderFlag('atuscode-opengateway', [])
   expect(result.error).toBeUndefined()
 
   const captured = await captureChatCompletionRequest()
@@ -2459,11 +2459,11 @@ test('gitlawb opengateway provider flag trims OPENGATEWAY_API_KEY before bearer 
   expect(captured.authorization).toBe('Bearer fake-ogw-key')
 })
 
-test('gitlawb opengateway provider flag ignores blank OPENGATEWAY_API_KEY and uses OPENAI_API_KEY fallback', async () => {
+test('atuscode opengateway provider flag ignores blank OPENGATEWAY_API_KEY and uses OPENAI_API_KEY fallback', async () => {
   process.env.OPENGATEWAY_API_KEY = '   '
   process.env.OPENAI_API_KEY = 'fake-openai-fallback'
 
-  const result = applyProviderFlag('gitlawb-opengateway', [])
+  const result = applyProviderFlag('atuscode-opengateway', [])
   expect(result.error).toBeUndefined()
 
   const captured = await captureChatCompletionRequest()
@@ -2471,12 +2471,12 @@ test('gitlawb opengateway provider flag ignores blank OPENGATEWAY_API_KEY and us
   expect(captured.authorization).toBe('Bearer fake-openai-fallback')
 })
 
-test('gitlawb opengateway provider flag sends OPENGATEWAY_API_KEY to OPENGATEWAY_BASE_URL override', async () => {
+test('atuscode opengateway provider flag sends OPENGATEWAY_API_KEY to OPENGATEWAY_BASE_URL override', async () => {
   process.env.OPENGATEWAY_BASE_URL = 'http://localhost:8181/v1'
   process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
   delete process.env.OPENAI_API_KEY
 
-  const result = applyProviderFlag('gitlawb-opengateway', [])
+  const result = applyProviderFlag('atuscode-opengateway', [])
   expect(result.error).toBeUndefined()
 
   const captured = await captureChatCompletionRequest()
@@ -2485,13 +2485,13 @@ test('gitlawb opengateway provider flag sends OPENGATEWAY_API_KEY to OPENGATEWAY
   expect(captured.authorization).toBe('Bearer fake-ogw-key')
 })
 
-test('gitlawb opengateway provider flag sends OPENGATEWAY_API_KEY to custom OPENAI_BASE_URL fallback', async () => {
+test('atuscode opengateway provider flag sends OPENGATEWAY_API_KEY to custom OPENAI_BASE_URL fallback', async () => {
   process.env.OPENAI_BASE_URL = 'http://localhost:8181/v1'
   process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
   delete process.env.OPENGATEWAY_BASE_URL
   delete process.env.OPENAI_API_KEY
 
-  const result = applyProviderFlag('gitlawb-opengateway', [])
+  const result = applyProviderFlag('atuscode-opengateway', [])
   expect(result.error).toBeUndefined()
 
   const captured = await captureChatCompletionRequest()
@@ -2500,12 +2500,12 @@ test('gitlawb opengateway provider flag sends OPENGATEWAY_API_KEY to custom OPEN
   expect(captured.authorization).toBe('Bearer fake-ogw-key')
 })
 
-test('gitlawb opengateway provider flag prefers OPENGATEWAY_API_KEY over generic OPENAI_API_KEY for custom base URL', async () => {
+test('atuscode opengateway provider flag prefers OPENGATEWAY_API_KEY over generic OPENAI_API_KEY for custom base URL', async () => {
   process.env.OPENGATEWAY_BASE_URL = 'http://localhost:8181/v1'
   process.env.OPENGATEWAY_API_KEY = 'fake-ogw-key'
   process.env.OPENAI_API_KEY = 'fake-generic-openai-key'
 
-  const result = applyProviderFlag('gitlawb-opengateway', [])
+  const result = applyProviderFlag('atuscode-opengateway', [])
   expect(result.error).toBeUndefined()
 
   const captured = await captureChatCompletionRequest()
@@ -2514,15 +2514,15 @@ test('gitlawb opengateway provider flag prefers OPENGATEWAY_API_KEY over generic
   expect(captured.authorization).toBe('Bearer fake-ogw-key')
 })
 
-test('gitlawb opengateway stored provider profile key becomes bearer auth', async () => {
+test('atuscode opengateway stored provider profile key becomes bearer auth', async () => {
   delete process.env.OPENAI_API_KEY
   delete process.env.OPENGATEWAY_API_KEY
 
   applyProviderProfileToProcessEnv({
     id: 'stored-opengateway',
-    provider: 'gitlawb-opengateway',
-    name: 'Gitlawb Opengateway',
-    baseUrl: 'https://opengateway.gitlawb.com/v1',
+    provider: 'atuscode-opengateway',
+    name: 'AtusCode Opengateway',
+    baseUrl: 'https://opengateway.atuscode.com/v1',
     model: 'mimo-v2.5-pro',
     apiKey: 'fake-profile-key',
   })
@@ -5196,7 +5196,7 @@ test('preserves valid tool_result and drops orphan tool_result', async () => {
             type: 'tool_use',
             id: 'valid_call_1',
             name: 'Search',
-            input: { query: 'openclaude' },
+            input: { query: 'atuscode' },
           },
         ],
       },

@@ -1,10 +1,10 @@
 import { defineGateway } from '../define.js'
 
 export default defineGateway({
-  id: 'gitlawb-opengateway',
-  label: 'Gitlawb Opengateway',
+  id: 'atuscode-opengateway',
+  label: 'AtusCode Opengateway',
   category: 'aggregating',
-  defaultBaseUrl: 'https://opengateway.gitlawb.com/v1',
+  defaultBaseUrl: 'https://opengateway.atuscode.com/v1',
   defaultModel: 'mimo-v2.5-pro',
   supportsModelRouting: true,
   vendorId: 'openai',
@@ -17,13 +17,13 @@ export default defineGateway({
     kind: 'credential-env',
     // OPENGATEWAY_API_KEY first so users who set both don't get their generic
     // OpenAI key sent to opengateway by accident. OPENAI_API_KEY kept as a
-    // fallback because that's where existing openclaude configs already hold it.
+    // fallback because that's where existing atuscode configs already hold it.
     credentialEnvVars: ['OPENGATEWAY_API_KEY', 'OPENAI_API_KEY'],
     missingCredentialMessage:
-      'OPENGATEWAY_API_KEY is required to use Gitlawb Opengateway.\n' +
-      'Mint a free API key at https://gitlawb.com/opengateway/keys and set it as OPENGATEWAY_API_KEY (or OPENAI_API_KEY when OPENAI_BASE_URL points at opengateway).',
+      'OPENGATEWAY_API_KEY is required to use AtusCode Opengateway.\n' +
+      'Mint a free API key at https://atuscode.com/opengateway/keys and set it as OPENGATEWAY_API_KEY (or OPENAI_API_KEY when OPENAI_BASE_URL points at opengateway).',
     routing: {
-      matchBaseUrlHosts: ['opengateway.gitlawb.com', 'opengateway.fly.dev'],
+      matchBaseUrlHosts: ['opengateway.atuscode.com', 'opengateway.fly.dev'],
     },
   },
   transportConfig: {
@@ -45,15 +45,15 @@ export default defineGateway({
     },
   },
   preset: {
-    id: 'gitlawb-opengateway',
-    description: 'Gitlawb Opengateway - (API key required, signup at https://gitlawb.com/opengateway/keys)',
+    id: 'atuscode-opengateway',
+    description: 'AtusCode Opengateway - (API key required, signup at https://atuscode.com/opengateway/keys)',
     apiKeyEnvVars: ['OPENGATEWAY_API_KEY'],
-    label: 'Gitlawb Opengateway',
-    name: 'Gitlawb Opengateway',
+    label: 'AtusCode Opengateway',
+    name: 'AtusCode Opengateway',
     vendorId: 'openai',
     modelEnvVars: ['OPENAI_MODEL'],
     baseUrlEnvVars: ['OPENGATEWAY_BASE_URL', 'OPENAI_BASE_URL'],
-    fallbackBaseUrl: 'https://opengateway.gitlawb.com/v1',
+    fallbackBaseUrl: 'https://opengateway.atuscode.com/v1',
     fallbackModel: 'mimo-v2.5-pro',
     badge: { text: 'Recommended', color: 'success' },
   },

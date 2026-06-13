@@ -1,7 +1,7 @@
 /* ════════════════════════════════════════════════════════════════════════
-   openclaude — gitlawb-aligned design tokens
+   atuscode — atuscode-aligned design tokens
    Monochrome surface system driven by --surface-rgb (inverts under light
-   theme) + openclaude orange accent. Dark is the default theme.
+   theme) + atuscode orange accent. Dark is the default theme.
    ════════════════════════════════════════════════════════════════════════ */
 
 * { box-sizing: border-box; }
@@ -14,13 +14,13 @@
   --foreground: #ffffff;
   --surface-rgb: 255, 255, 255;
 
-  /* openclaude accent */
+  /* atuscode accent */
   --accent: #ff7a1a;
   --accent-strong: #ff8f3d;
   --accent-soft: rgba(255, 122, 26, 0.14);
   --accent-line: rgba(255, 122, 26, 0.4);
 
-  /* gitlawb semantic colors */
+  /* atuscode semantic colors */
   --green: #4ade80;
   --red: #f87171;
   --yellow: #facc15;
@@ -136,7 +136,7 @@ h1[id], h2[id], h3[id], h4[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
 }
 .skip-link:focus { left: 0; }
 
-/* ── type scale (gitlawb) ─────────────────────────────────────────────── */
+/* ── type scale (atuscode) ─────────────────────────────────────────────── */
 
 .text-hero {
   font-size: clamp(2.5rem, 6vw, 3.75rem);

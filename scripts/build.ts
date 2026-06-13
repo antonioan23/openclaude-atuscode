@@ -1,5 +1,5 @@
 /**
- * OpenClaude build script — bundles the TypeScript source into a single
+ * AtusCode build script — bundles the TypeScript source into a single
  * distributable JS file using Bun's bundler.
  *
  * Handles:
@@ -130,10 +130,10 @@ result = await Bun.build({
     'MACRO.DISPLAY_VERSION': JSON.stringify(version),
     'MACRO.BUILD_TIME': JSON.stringify(new Date().toISOString()),
     'MACRO.ISSUES_EXPLAINER':
-      JSON.stringify('report the issue at https://github.com/Gitlawb/openclaude/issues'),
+      JSON.stringify('report the issue at https://github.com/atuscode/atuscode/issues'),
     'MACRO.FEEDBACK_CHANNEL':
-      JSON.stringify('https://github.com/Gitlawb/openclaude/issues'),
-    'MACRO.PACKAGE_URL': JSON.stringify('@gitlawb/openclaude'),
+      JSON.stringify('https://github.com/atuscode/atuscode/issues'),
+    'MACRO.PACKAGE_URL': JSON.stringify('@atuscode/atuscode'),
     'MACRO.NATIVE_PACKAGE_URL': 'undefined',
     'MACRO.VERSION_CHANGELOG': 'undefined',
   },
@@ -458,7 +458,7 @@ if (!result.success) {
   }
   process.exitCode = 1
 } else {
-  console.log(`✓ Built openclaude v${version} → dist/cli.mjs`)
+  console.log(`✓ Built atuscode v${version} → dist/cli.mjs`)
 }
 
 // ── SDK Bundle Build ──────────────────────────────────────────────────────
@@ -479,10 +479,10 @@ sdkResult = await Bun.build({
     'MACRO.DISPLAY_VERSION': JSON.stringify(version),
     'MACRO.BUILD_TIME': JSON.stringify(new Date().toISOString()),
     'MACRO.ISSUES_EXPLAINER':
-      JSON.stringify('report the issue at https://github.com/Gitlawb/openclaude/issues'),
+      JSON.stringify('report the issue at https://github.com/atuscode/atuscode/issues'),
     'MACRO.FEEDBACK_CHANNEL':
-      JSON.stringify('https://github.com/Gitlawb/openclaude/issues'),
-    'MACRO.PACKAGE_URL': JSON.stringify('@gitlawb/openclaude'),
+      JSON.stringify('https://github.com/atuscode/atuscode/issues'),
+    'MACRO.PACKAGE_URL': JSON.stringify('@atuscode/atuscode'),
     'MACRO.NATIVE_PACKAGE_URL': 'undefined',
     'MACRO.VERSION_CHANGELOG': 'undefined',
   },
@@ -968,8 +968,8 @@ if (result?.success) {
 
   // Stub markers are not byte-stable across build hosts: the per-importer
   // scanner records each stub as the resolved absolute source path, which
-  // differs only by the repo-root prefix (`/home/ubuntu/.../openclaude` locally
-  // vs `/home/runner/work/openclaude/openclaude` on CI). Diffing raw text made
+  // differs only by the repo-root prefix (`/home/ubuntu/.../atuscode` locally
+  // vs `/home/runner/work/atuscode/atuscode` on CI). Diffing raw text made
   // CI fail on already-allowlisted stubs and report them stale. Key on the
   // repo-relative path from `src/` onward without extension: stable across hosts
   // yet still path-specific, so a stub named `constants.ts` in one directory

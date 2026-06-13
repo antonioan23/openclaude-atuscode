@@ -300,9 +300,9 @@ export function getRelativeSettingsFilePathForSource(
 ): string {
   switch (source) {
     case 'projectSettings':
-      return '.openclaude/settings.json'
+      return '.atuscode/settings.json'
     case 'localSettings':
-      return '.openclaude/settings.local.json'
+      return '.atuscode/settings.local.json'
   }
 }
 
@@ -639,14 +639,14 @@ export function getManagedSettingsKeysForLogging(
 function isSettingsLoadInProgress(): boolean {
   return (
     (globalThis as Record<string, unknown>)[
-      '__openclaudeSettingsLoadInProgress'
+      '__atuscodeSettingsLoadInProgress'
     ] === true
   )
 }
 
 function setSettingsLoadInProgress(value: boolean): void {
   ;(globalThis as Record<string, unknown>)[
-    '__openclaudeSettingsLoadInProgress'
+    '__atuscodeSettingsLoadInProgress'
   ] = value
 }
 

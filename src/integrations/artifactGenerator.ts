@@ -233,12 +233,12 @@ function compareProviderPresetEntries(
     return 0
   }
 
-  // Pin Gitlawb Opengateway first so the startup-default provider is also
+  // Pin AtusCode Opengateway first so the startup-default provider is also
   // the first guided setup option when users need to add an API key.
-  if (leftPreset === 'gitlawb-opengateway') {
+  if (leftPreset === 'atuscode-opengateway') {
     return -1
   }
-  if (rightPreset === 'gitlawb-opengateway') {
+  if (rightPreset === 'atuscode-opengateway') {
     return 1
   }
 

@@ -102,14 +102,14 @@ async function waitForCondition(
 }
 
 // Provider list is sorted from generated preset metadata by description, with
-// Gitlawb Opengateway pinned first, Codex OAuth injected after DeepSeek, and
+// AtusCode Opengateway pinned first, Codex OAuth injected after DeepSeek, and
 // Custom always pinned last. Keep the target-by-label indirection here so
 // these tests survive future list edits without hardcoding raw key counts.
 //
 // Order matches ProviderManager.renderPresetSelection() when
 // canUseCodexOAuth === true (default in mocked tests).
 const PRESET_ORDER = [
-  'Gitlawb Opengateway',
+  'AtusCode Opengateway',
   'Anthropic',
   'Alibaba Coding Plan (China)',
   'Alibaba Coding Plan',
@@ -1495,7 +1495,7 @@ test('ProviderManager first-run Codex OAuth switches the current session after l
     expect.objectContaining({
       action: 'saved',
       message:
-        'Codex OAuth configured. OpenClaude switched to it for this session.',
+        'Codex OAuth configured. AtusCode switched to it for this session.',
     }),
   )
 
@@ -1585,7 +1585,7 @@ test('ProviderManager first-run Codex OAuth surfaces credential storage warnings
     expect.objectContaining({
       action: 'saved',
       message:
-        'Codex OAuth configured. OpenClaude switched to it for this session with warnings: Warning: Storing credentials in plaintext.',
+        'Codex OAuth configured. AtusCode switched to it for this session with warnings: Warning: Storing credentials in plaintext.',
     }),
   )
 

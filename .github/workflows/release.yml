@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   release-please:
-    if: ${{ github.repository == 'Gitlawb/openclaude' }}
+    if: ${{ github.repository == 'antonioan23/atuscode' }}
     name: Release Please
     runs-on: ubuntu-latest
     permissions:
@@ -91,16 +91,16 @@ jobs:
           fi
 
           for attempt in $(seq 1 30); do
-            published_version="$(npm view @gitlawb/openclaude version 2>/dev/null || true)"
-            latest_tag="$(npm view @gitlawb/openclaude dist-tags.latest 2>/dev/null || true)"
-            latest_version="$(npm view @gitlawb/openclaude@latest version 2>/dev/null || true)"
+            published_version="$(npm view @atuscode/atuscode version 2>/dev/null || true)"
+            latest_tag="$(npm view @atuscode/atuscode dist-tags.latest 2>/dev/null || true)"
+            latest_version="$(npm view @atuscode/atuscode@latest version 2>/dev/null || true)"
 
             echo "Attempt ${attempt}: version=${published_version:-<empty>} latest=${latest_tag:-<empty>} @latest=${latest_version:-<empty>} expected=${EXPECTED_VERSION}"
 
             if [ "$published_version" = "$EXPECTED_VERSION" ] && \
                [ "$latest_tag" = "$EXPECTED_VERSION" ] && \
                [ "$latest_version" = "$EXPECTED_VERSION" ]; then
-              echo "npm latest verified for @gitlawb/openclaude@${EXPECTED_VERSION}"
+              echo "npm latest verified for @atuscode/atuscode@${EXPECTED_VERSION}"
               exit 0
             fi
 
@@ -118,8 +118,8 @@ jobs:
           {
             echo "## Released ${{ needs.release-please.outputs.tag_name }}"
             echo
-            echo "- npm: https://www.npmjs.com/package/@gitlawb/openclaude"
-            echo "- GitHub: https://github.com/Gitlawb/openclaude/releases/tag/${{ needs.release-please.outputs.tag_name }}"
+            echo "- npm: https://www.npmjs.com/package/@atuscode/atuscode"
+            echo "- GitHub: https://github.com/antonioan23/atuscode/releases/tag/${{ needs.release-please.outputs.tag_name }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   docker:
@@ -161,11 +161,11 @@ jobs:
         with:
           context: .
           load: true
-          tags: openclaude:smoke
+          tags: atuscode:smoke
           cache-from: type=gha
 
       - name: Smoke test
-        run: docker run --rm openclaude:smoke --version
+        run: docker run --rm atuscode:smoke --version
 
       - name: Build and push
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2

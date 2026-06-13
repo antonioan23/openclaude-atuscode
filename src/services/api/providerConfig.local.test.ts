@@ -107,16 +107,16 @@ test('keeps codex alias models on chat completions for local openai-compatible p
   )).toBe(true)
 })
 
-test('normalizes legacy Gitlawb Opengateway provider-prefixed base URLs to the smart route', () => {
+test('normalizes legacy AtusCode Opengateway provider-prefixed base URLs to the smart route', () => {
   process.env.CLAUDE_CODE_USE_OPENAI = '1'
-  process.env.OPENAI_BASE_URL = 'https://opengateway.gitlawb.com/v1/xiaomi-mimo'
+  process.env.OPENAI_BASE_URL = 'https://opengateway.atuscode.com/v1/xiaomi-mimo'
   process.env.OPENAI_MODEL = 'zai-org/GLM-5.1-FP8'
 
   expect(resolveProviderRequest()).toMatchObject({
     transport: 'chat_completions',
     requestedModel: 'zai-org/GLM-5.1-FP8',
     resolvedModel: 'zai-org/GLM-5.1-FP8',
-    baseUrl: 'https://opengateway.gitlawb.com/v1',
+    baseUrl: 'https://opengateway.atuscode.com/v1',
   })
 })
 

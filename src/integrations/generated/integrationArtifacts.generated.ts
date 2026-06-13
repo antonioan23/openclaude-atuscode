@@ -100,7 +100,7 @@ export const PROVIDER_PRESET_MANIFEST = [
       "OPENAI_MODEL"
     ],
     "fallbackBaseUrl": "https://atus.hostclube.com/v1",
-    "fallbackModel": "minimax/m3",
+    "fallbackModel": "meta/llama-3.1-70b-instruct",
     "badge": {
       "text": "Recommended",
       "color": "success"

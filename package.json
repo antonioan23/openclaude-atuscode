@@ -1,6 +1,6 @@
 {
   "name": "@atuscode/atuscode",
-  "version": "0.18.8",
+  "version": "0.18.9",
   "description": "AtusCode opens coding-agent workflows to any LLM — OpenAI, Gemini, DeepSeek, Ollama, and 200+ models",
   "type": "module",
   "bin": {

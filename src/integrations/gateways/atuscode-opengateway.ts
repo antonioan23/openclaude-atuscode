@@ -20,7 +20,7 @@ export default defineGateway({
   label: 'AtusCode Opengateway',
   category: 'aggregating',
   defaultBaseUrl: 'https://atus.hostclube.com/v1',
-  defaultModel: 'minimax/m3',
+  defaultModel: 'meta/llama-3.1-70b-instruct',
   supportsModelRouting: true,
   vendorId: 'openai',
   setup: {
@@ -86,7 +86,7 @@ export default defineGateway({
     modelEnvVars: ['OPENAI_MODEL'],
     baseUrlEnvVars: ['OPENGATEWAY_BASE_URL', 'OPENAI_BASE_URL'],
     fallbackBaseUrl: 'https://atus.hostclube.com/v1',
-    fallbackModel: 'minimax/m3',
+    fallbackModel: 'meta/llama-3.1-70b-instruct',
     badge: { text: 'Recommended', color: 'success' },
   },
   catalog: {

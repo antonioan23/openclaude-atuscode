@@ -119,7 +119,7 @@ jobs:
             echo "## Released ${{ needs.release-please.outputs.tag_name }}"
             echo
             echo "- npm: https://www.npmjs.com/package/@atuscode/atuscode"
-            echo "- GitHub: https://github.com/antonioan23/atuscode/releases/tag/${{ needs.release-please.outputs.tag_name }}"
+            echo "- GitHub: https://github.com/antonioan23/openclaude-atuscode/releases/tag/${{ needs.release-please.outputs.tag_name }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   docker:

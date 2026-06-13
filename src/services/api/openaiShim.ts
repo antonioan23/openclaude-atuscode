@@ -1893,11 +1893,23 @@ async function* openaiStreamToAnthropic(
           // JSON text; scan accumulated text on any terminal finish reason with no
           // API tool calls. finish_reason is mutated to 'tool_calls' only for 'stop'
           // so the JSON fallback remains scoped to normal completions.
+          //
+          // 0.18.11 HYBRID: enable the markdown→tool_calls parser for ALL
+          // upstreams, not just Ollama. Many text-completion models (M3 via
+          // tokenrouter, llama-3.1-8b, github/gpt-4o-mini) emit tool calls
+          // as fenced JSON in `content` instead of a `tool_calls` array.
+          // We detect that pattern by checking for `"name":` inside a fenced
+          // block and run the parser. The parser is safe (only acts on
+          // explicit fences) and idempotent.
           const OLLAMA_TERMINAL_REASONS = new Set(['stop', 'length', 'content_filter', 'safety'])
-          const isTerminalOllamaFinish =
+          const looksLikeTextToolCall =
             OLLAMA_TERMINAL_REASONS.has(choice.finish_reason ?? '') &&
             activeToolCalls.size === 0 &&
-            isOllamaStream
+            (isOllamaStream ||
+              // Hybrid: any non-tool-calls response with a fenced JSON block
+              // containing a "name" field is a tool call expressed as text.
+              /```[a-zA-Z0-9_-]*\n[\s\S]*?"name"\s*:[\s\S]*?```/.test(accumulatedText))
+          const isTerminalOllamaFinish = looksLikeTextToolCall
           const originalFinishReason = choice.finish_reason
           let ollamaClosedContentBlock = false
           if (isTerminalOllamaFinish) {
@@ -3374,7 +3386,14 @@ class OpenAIShimMessages {
       }
     }
 
-    if (choice?.message?.tool_calls) {
+    // 0.18.11 HYBRID: also parse markdown-style tool calls when
+    // choice.message.tool_calls exists but is empty (some text-completion
+    // models like MiniMax-M3 via tokenrouter sometimes return tool_calls:[]
+    // and put the actual tool call in `content` as a fenced JSON block).
+    // The parser is idempotent — if `tool_calls` is non-empty, the array
+    // wins. If empty, we try the markdown parser on the content.
+    const hasNativeToolCalls = choice?.message?.tool_calls && choice.message.tool_calls.length > 0
+    if (hasNativeToolCalls) {
       for (const tc of choice.message.tool_calls) {
         const input = normalizeToolArguments(
           tc.function.name,
@@ -3396,6 +3415,33 @@ class OpenAIShimMessages {
           ...(mergedToolExtraContent ? { extra_content: mergedToolExtraContent } : {}),
           ...(toolSignature ? { signature: toolSignature } : {}),
         })
+      }
+    } else if (choice?.message?.content) {
+      // 0.18.11 HYBRID FALLBACK: the upstream returned content but no
+      // native tool_calls array. Many text-completion models (M3 via
+      // tokenrouter, llama-3.1-8b) emit tool calls as fenced JSON
+      // blocks in `content` instead of a `tool_calls` array. Try to
+      // parse those and convert to tool_use blocks. This makes the
+      // atuscode CLI work with EVERY text-completion model — not just
+      // Ollama — without requiring the user to swap to a native-
+      // tool_calls model.
+      const strippedContent = stripThinkTags(choice.message.content)
+      const rawToolCalls = parseRawToolCallsRequestedText(strippedContent)
+      if (rawToolCalls) {
+        for (const toolCall of rawToolCalls) {
+          content.push({
+            type: 'tool_use',
+            id: toolCall.id,
+            name: toolCall.name,
+            input: JSON.parse(toolCall.argumentsJson),
+          })
+        }
+        // Replace the original text content with the version that has
+        // the fenced tool-call block stripped, so the user doesn't see
+        // the raw JSON in the terminal.
+        if (content.length > 0 && content[0].type === 'text') {
+          content[0] = { ...content[0], text: strippedContent.replace(/```[a-zA-Z0-9_-]*\n[\s\S]*?"name"\s*:[\s\S]*?```/g, '').trim() || '(tool call emitted)' }
+        }
       }
     }
 

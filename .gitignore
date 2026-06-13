@@ -19,3 +19,4 @@ agent.log
 plan/
 .tmp
 temp_reference/
+*.npmrc

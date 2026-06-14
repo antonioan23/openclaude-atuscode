@@ -6,6 +6,7 @@ import { getShortcutDisplay } from '../keybindings/shortcutFormat.js';
 import { useShortcutDisplay } from '../keybindings/useShortcutDisplay.js';
 import { KeyboardShortcutHint } from './design-system/KeyboardShortcutHint.js';
 import { InVirtualListContext } from './messageActions.js';
+import { getAutoCollapseThreshold } from './AutoCollapsedSummary.js'
 
 // Context to track if we're inside a sub agent
 // Similar to MessageResponseContext, this helps us avoid showing

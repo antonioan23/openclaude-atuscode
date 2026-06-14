@@ -32,6 +32,12 @@ export function CtrlOToExpand() {
   const isInSubAgent = useContext(SubAgentContext);
   const inVirtualList = useContext(InVirtualListContext);
   const expandShortcut = useShortcutDisplay("app:toggleTranscript", "Global", "ctrl+o");
+  // Reference getAutoCollapseThreshold so the AutoCollapsedSummary module
+  // is preserved by the bundler's tree-shake (it would otherwise be
+  // dropped because CtrlOToExpand only imports it as a side-effect).
+  // 0.18.12 — the threshold is read at render time elsewhere, but we
+  // need the function symbol to be retained here.
+  const autoCollapseThreshold = getAutoCollapseThreshold();
   if (isInSubAgent || inVirtualList) {
     return null;
   }
